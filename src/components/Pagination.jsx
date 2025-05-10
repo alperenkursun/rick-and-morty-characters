@@ -1,31 +1,33 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { Button, IconButton } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { CharacterContext } from "../contexts/CharacterContext";
 
 function Pagination() {
-  const [active, setActive] = useState(1);
+  const { activePage, setActivePage } = useContext(CharacterContext);
   const totalPages = 37;
   const maxVisiblePages = 5;
 
   const getItemProps = (index) => ({
-    variant: active === index ? "filled" : "text",
-    color: active === index ? "red" : "black",
-    className: active === index ? "text-[#00ee00]" : "",
-    onClick: () => setActive(index),
+    variant: activePage === index ? "filled" : "text",
+    color: activePage === index ? "red" : "black",
+    className:
+      activePage === index ? "text-[#00ee00] cursor-pointer" : "cursor-pointer",
+    onClick: () => setActivePage(index),
   });
 
   const next = () => {
-    if (active === totalPages) return;
-    setActive(active + 1);
+    if (activePage === totalPages) return;
+    setActivePage(activePage + 1);
   };
 
   const prev = () => {
-    if (active === 1) return;
-    setActive(active - 1);
+    if (activePage === 1) return;
+    setActivePage(activePage - 1);
   };
 
   const getVisiblePages = () => {
-    let start = Math.max(1, active - Math.floor(maxVisiblePages / 2));
+    let start = Math.max(1, activePage - Math.floor(maxVisiblePages / 2));
     let end = start + maxVisiblePages - 1;
 
     if (end > totalPages) {
@@ -41,9 +43,9 @@ function Pagination() {
       <div className="flex justify-center gap-[15px] py-[10px]">
         <Button
           variant="text"
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 cursor-pointer"
           onClick={prev}
-          disabled={active === 1}
+          disabled={activePage === 1}
         >
           <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
         </Button>
@@ -58,9 +60,9 @@ function Pagination() {
 
         <Button
           variant="text"
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 cursor-pointer"
           onClick={next}
-          disabled={active === totalPages}
+          disabled={activePage === totalPages}
         >
           Next
           <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
