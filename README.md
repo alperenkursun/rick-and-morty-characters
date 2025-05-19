@@ -4,7 +4,9 @@ HTML - Tailwind CSS - JS - React - GraphQL - Apollo Client App
 
 ---
 
-<!-- ![rmcimg](rmc.png) -->
+[See The Project](https://rickandmortycharactersfilter.netlify.app/)
+
+![rmcimg](rmc.webp)
 
 [Patika GraphQL Project-2](https://academy.patika.dev/courses/graphql/project-02)
 

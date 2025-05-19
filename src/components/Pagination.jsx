@@ -4,8 +4,10 @@ import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { CharacterContext } from "../contexts/CharacterContext";
 
 function Pagination() {
-  const { activePage, setActivePage } = useContext(CharacterContext);
-  const totalPages = 37;
+  const { activePage, setActivePage, selectedLocation, info } =
+    useContext(CharacterContext);
+  const totalPages = info?.pages || 1;
+
   const maxVisiblePages = 5;
 
   const getItemProps = (index) => ({
@@ -17,16 +19,22 @@ function Pagination() {
   });
 
   const next = () => {
-    if (activePage === totalPages) return;
-    setActivePage(activePage + 1);
+    setActivePage((prevActivePage) =>
+      info?.next ? prevActivePage + 1 : prevActivePage
+    );
   };
 
   const prev = () => {
-    if (activePage === 1) return;
-    setActivePage(activePage - 1);
+    setActivePage((prevActivePage) =>
+      info?.prev ? Math.max(1, prevActivePage - 1) : prevActivePage
+    );
   };
 
   const getVisiblePages = () => {
+    if (!totalPages) {
+      return [];
+    }
+
     let start = Math.max(1, activePage - Math.floor(maxVisiblePages / 2));
     let end = start + maxVisiblePages - 1;
 
@@ -40,12 +48,16 @@ function Pagination() {
 
   return (
     <div className="max-w-[1200px] mx-auto pb-[45px]">
-      <div className="flex justify-center gap-[15px] py-[10px]">
+      <div
+        className={`flex justify-center gap-[15px] py-[10px] ${
+          selectedLocation != "" && "hidden"
+        }`}
+      >
         <Button
           variant="text"
           className="flex items-center gap-2 cursor-pointer"
           onClick={prev}
-          disabled={activePage === 1}
+          disabled={!info?.prev}
         >
           <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
         </Button>
@@ -62,7 +74,7 @@ function Pagination() {
           variant="text"
           className="flex items-center gap-2 cursor-pointer"
           onClick={next}
-          disabled={activePage === totalPages}
+          disabled={!info?.next}
         >
           Next
           <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />

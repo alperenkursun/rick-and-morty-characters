@@ -2,8 +2,7 @@ import { useContext } from "react";
 import { CharacterContext } from "../contexts/CharacterContext.jsx";
 
 function List() {
-  const { characters, characterLoading, perPage, setPerPage } =
-    useContext(CharacterContext);
+  const { characters, characterLoading } = useContext(CharacterContext);
 
   if (characterLoading)
     return (
@@ -13,18 +12,8 @@ function List() {
     );
 
   return (
-    <div className="flex-3">
-      <div className="flex justify-end items-center pb-[15px] border-b-[1px] border-b-[#444]">
-        <select
-          value={perPage}
-          onChange={(e) => setPerPage(parseInt(e.target.value))}
-          className="text-[13px] text-[#999] font-bold cursor-pointer h-[33px] focus:outline-none"
-        >
-          <option value={20}>20 hits per page</option>
-          <option value={40}>40 hits per page</option>
-          <option value={60}>60 hits per page</option>
-        </select>
-      </div>
+    <div className="flex-1">
+      <div className="border-b-[1px] border-b-[#444] h-[49px]"></div>
       <div className="py-[15px] grid grid-cols-2 sm:grid-cols-4 gap-[40px] flex-wrap">
         {characters.map((character) => (
           <div key={character.id} className="flex flex-col gap-[10px]">
